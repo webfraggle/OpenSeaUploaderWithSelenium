@@ -66,7 +66,7 @@ const upload = async function(image, nr, eth)
         try {
             var collectionDrop = await driver.wait(until.elementLocated(By.css("[id^='tippy-'] li")), 20000, 'notfound', 1000);
         } catch (error) {
-            console.log('Collection Drop Error!');
+            console.error('Collection Drop Error!');
         }
         
     } while (collectionDrop == undefined)
@@ -84,34 +84,37 @@ const upload = async function(image, nr, eth)
     await driver.findElement(By.className("AssetForm--submit")).findElement(By.css("Button")).click();
     //var closeBtn = await driver.wait(until.elementLocated(By.css("i[aria-label='Close']"),10000));
 
-    //do {
-       try {
-            var closeBtn = await driver.wait(until.elementLocated(By.css("i[aria-label='Close']")), 30000, 'ERROR: Close NotFound', 1000);
+    // trying to get the cause of the crash
+    try {
+        var closeBtn = await driver.wait(until.elementLocated(By.css("i[aria-label='Close']")), 30000, 'ERROR: Close NotFound', 1000);
+    } catch (error) {
+        console.error(error);
+        let title = await driver.getTitle();
+        console.log('closeBtn not found, Title: '+title);
+        try {
+            var Assetform = await driver.wait(until.elementLocated(By.className("AssetForm--submit")), 30000, 'ERROR: Assetform notfound', 1000);
+            
         } catch (error) {
-            console.log(error);
-            let title = await driver.getTitle();
-            console.log('closeBtn not found, Title: '+title);
-            try {
-                var Assetform = await driver.wait(until.elementLocated(By.className("AssetForm--submit")), 30000, 'ERROR: Assetform notfound', 1000);
-                
-            } catch (error) {
-                console.log('Assetform not found', error);
-            }
-            console.log('Assetform: ',Assetform);
-            if (Assetform != undefined) console.log('Assetform.getText: ',Assetform.getText());
+            console.log('Assetform not found', error);
+        }
+        console.log('Assetform: ',Assetform);
+        if (Assetform != undefined) console.log('Assetform.getText: ',Assetform.getText());
 
-            // check the error for Success or not
-            // Upload Successfull, Sell not possible
-            if (title.includes("Something Went Wrong"))
-            {
-                console.error('Something Went Wrong Page! Maybe Success! Renaming, but not selling');
-                return true;
-            }
-            process.exit();
+        // check the error for Success or not
+        // Upload Successfull, Sell not possible
+        if (title.includes("Something Went Wrong"))
+        {
+            console.error('Something Went Wrong Page! Maybe Success! Renaming, but not selling');
+            return true;
+        }
+        if (title.includes("Create NFTs"))
+        {
+            console.error('Still on Create Page! No Success! Not Renaming, try again');
             return false;
         }
-        
-    //} while (collectionDrop == undefined)
+        process.exit();
+        return false;
+    }
 
     
     // stop here for just uploading
