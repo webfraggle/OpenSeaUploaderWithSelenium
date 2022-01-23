@@ -1,0 +1,9 @@
+{
+    "imagePath":"/NFT/BLA/",
+    "namePrefix":"Prefix #",
+    "nameSuffix":"",
+    "sellPrice":"0.005",
+    "uploadCount":1000,
+    "metaMaskPWD":"PWD",
+    "userDataDir":"/Users/xyz/Documents/NFT/Batch Uploader/user-data"
+}
