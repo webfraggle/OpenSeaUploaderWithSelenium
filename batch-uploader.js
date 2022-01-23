@@ -53,7 +53,13 @@ const upload = async function(image, nr, eth)
     console.log('Trying to Upload: '+image);
 
     await driver.get('https://opensea.io/asset/create');
-    var file = await driver.wait(until.elementLocated(By.id('media'),10000));
+    try {
+        var file = await driver.wait(until.elementLocated(By.id('media')), 20000, 'File Input notfound', 1000);
+    } catch (error) {
+        console.error('ERROR: File Field not found');
+        return false;
+    }
+    //var file = await driver.wait(until.elementLocated(By.id('media'),10000));
     
     // File
     await file.sendKeys(imagePath+image)
