@@ -53,6 +53,7 @@ const upload = async function(image, nr, eth)
     console.log('Trying to Upload: '+image);
 
     await driver.get('https://opensea.io/asset/create');
+    console.log('After loading create page');
     try {
         var file = await driver.wait(until.elementLocated(By.id('media')), 20000, 'File Input notfound', 1000);
     } catch (error) {
@@ -60,12 +61,13 @@ const upload = async function(image, nr, eth)
         return false;
     }
     //var file = await driver.wait(until.elementLocated(By.id('media'),10000));
-    
+    console.log('After tying to get file element');
     // File
     await file.sendKeys(imagePath+image)
-    
+    console.log('After file send');
     // Title
     await driver.findElement(By.id("name")).sendKeys(namePrefix+nr+nameSuffix);
+    console.log('After trying to set item name');
     do {
         await driver.findElement(By.id("collection")).sendKeys(Key.chord(Key.COMMAND, "a"), "PiPi Pixel Pizza");
         //var collectionDrop = await driver.wait(until.elementLocated(By.css("[id^='tippy-'] li"),10000));
@@ -118,6 +120,11 @@ const upload = async function(image, nr, eth)
         {
             console.error('Still on Create Page! No Success! Not Renaming, try again');
             return false;
+        }
+        if (title.includes("OpenSea, the largest NFT marketplace"))
+        {
+            console.error('Still stuck in Uploading, hopefully success');
+            return true;
         }
         process.exit();
         return false;
