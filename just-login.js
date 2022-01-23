@@ -1,6 +1,6 @@
 // Just login, because every 24h Metamask has to be resigned
 // Resign manually
-
+const fs = require('fs');
 const {Builder, By, Key, until} = require('selenium-webdriver');
 
 let rawdata = fs.readFileSync('config.json');
