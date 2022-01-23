@@ -97,6 +97,7 @@ const upload = async function(image, nr, eth)
         console.error(error);
         let title = await driver.getTitle();
         console.log('closeBtn not found, Title: '+title);
+        /*
         try {
             var Assetform = await driver.wait(until.elementLocated(By.className("AssetForm--submit")), 30000, 'ERROR: Assetform notfound', 1000);
             
@@ -105,7 +106,7 @@ const upload = async function(image, nr, eth)
         }
         console.log('Assetform: ',Assetform);
         if (Assetform != undefined) console.log('Assetform.getText: ',Assetform.getText());
-
+        */
         // check the error for Success or not
         // Upload Successfull, Sell not possible
         if (title.includes("Something Went Wrong"))
