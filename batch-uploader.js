@@ -69,17 +69,18 @@ const upload = async function(image, nr, eth)
     await driver.findElement(By.id("name")).sendKeys(namePrefix+nr+nameSuffix);
     console.log('After trying to set item name');
     do {
-        await driver.findElement(By.id("collection")).sendKeys(Key.chord(Key.COMMAND, "a"), "PiPi Pixel Pizza");
-        //var collectionDrop = await driver.wait(until.elementLocated(By.css("[id^='tippy-'] li"),10000));
         try {
+            await driver.findElement(By.id("collection")).sendKeys(Key.chord(Key.COMMAND, "a"), "PiPi Pixel Pizza");
+            //var collectionDrop = await driver.wait(until.elementLocated(By.css("[id^='tippy-'] li"),10000));
             var collectionDrop = await driver.wait(until.elementLocated(By.css("[id^='tippy-'] li")), 20000, 'notfound', 1000);
         } catch (error) {
             console.error('Collection Drop Error!');
         }
         
     } while (collectionDrop == undefined)
+    console.log('before collectiondrop click');
     await collectionDrop.click();
-
+    console.log('after collectiondrop click');
 
     //await collectionDrop.findElement(By.css("li")).click();
     var chainInput = await driver.findElement(By.id("chain"));
@@ -91,7 +92,7 @@ const upload = async function(image, nr, eth)
 
     await driver.findElement(By.className("AssetForm--submit")).findElement(By.css("Button")).click();
     //var closeBtn = await driver.wait(until.elementLocated(By.css("i[aria-label='Close']"),10000));
-
+    console.log('After Create Button clicked, before trying to get success infos');
     // trying to get the cause of the crash
     try {
         var closeBtn = await driver.wait(until.elementLocated(By.css("i[aria-label='Close']")), 30000, 'ERROR: Close NotFound', 1000);
